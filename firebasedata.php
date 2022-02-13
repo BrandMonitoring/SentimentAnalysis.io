@@ -1,0 +1,80 @@
+<?php
+$sumNegative=0;
+$countNegative=0;
+$sumPositive=0;
+$countPositive=0;
+$sumNeutral=0;
+$countNeutral=0;
+$jan=0;
+$feb=0;
+$mar=0;
+$apr=0;
+$may=0;
+$jun=0;
+$jul=0;
+$aug=0;
+$sep=0;
+$oct=0;
+$nov=0;
+$dec=0;
+$ref_table="2";
+$fetchdata =$database->getReference($ref_table)->getValue();
+foreach($fetchdata as $keys){
+	foreach($keys as $key => $row){
+		if($row["Emotion"]=="Angry" OR $row["Emotion"]=="Sad" OR $row["Emotion"]=="Fear"){
+			$countNegative=$countNegative+1;
+			$sumNegative=(int)$sumNegative+(int)$row["Scores"];
+		}
+		elseif($row["Emotion"]=="Happy" OR $row["Emotion"]=="Surprise" ){
+			$countPositive=$countPositive+1;
+			$sumPositive=(int)$sumPositive+(int)$row["Scores"];
+		}
+		else{
+			$countNeutral=$countNeutral+1;
+			$sumNeutral=(int)$sumNeutral+(int)$row["Scores"];
+		}
+	}
+}
+foreach($fetchdata as $keys1){
+	foreach($keys1 as $key1 => $row1){
+		if($row1["Month"]==1){
+			$jan=(int)$jan+(int)$row1["Scores"];
+		}
+		if($row1["Month"]==2){
+			$feb=(int)$feb+(int)$row1["Scores"];
+		}
+		if($row1["Month"]==3){
+			$mar=(int)$mar+(int)$row1["Scores"];
+		}
+		if($row1["Month"]==4){
+			$apr=(int)$apr+(int)$row1["Scores"];
+		}
+		if($row1["Month"]==5){
+			$may=(int)$may+(int)$row1["Scores"];
+		}
+		if($row1["Month"]==6){
+			$jun=(int)$jun+(int)$row1["Scores"];
+		}
+		if($row1["Month"]==7){
+			$jul=(int)$jul+(int)$row1["Scores"];
+		}
+		if($row1["Month"]==8){
+			$aug=(int)$aug+(int)$row1["Scores"];
+		}
+		if($row1["Month"]==9){
+			$sep=(int)$sep+(int)$row1["Scores"];
+		}
+		if($row1["Month"]==10){
+			$oct=(int)$oct+(int)$row1["Scores"];
+		}
+		if($row1["Month"]==11){
+			$nov=(int)$nov+(int)$row1["Scores"];
+		}
+		elseif($row1["Month"]==12){
+			$dec=(int)$dec+(int)$row1["Scores"];
+		}
+	}
+}
+$total_score=($countPositive+$countNeutral+$countNegative)*7;
+$score=($sumPositive+$sumNeutral+$sumNegative);
+?>
