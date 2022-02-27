@@ -53,7 +53,7 @@ include("firebasedata.php");
               <a class="uk-button" href="#modal-container" uk-toggle>Video</a>
 
                 <div id="modal-container" class="uk-modal-container" uk-modal>
-                    <div class="uk-modal-dialog uk-modal-body">
+                    <div class="uk-modal-dialog uk-modal-body uk-padding-medium">
                         <button class="uk-modal-close-default" type="button" uk-close></button>
                         <h2 class="uk-modal-title">Video Analytics</h2>
                         <p>
