@@ -95,7 +95,7 @@ include("firebasedata.php");
           </div>
               <div>
                   <div>
-                  <a class="uk-button uk-button-default" style="color:white;" href="#modal-full1" uk-toggle>Audio</a>
+                  <a class="uk-button uk-button-default" style="color:white;" href="#modal-full1" uk-toggle>Audio <?php header("Location: analysis.php"); ?></a>
 
                     <div id="modal-full1" uk-modal>
                         <div class="uk-modal-dialog">
