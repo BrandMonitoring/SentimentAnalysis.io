@@ -16,6 +16,7 @@ include("firebasedata.php");
         <script src="https://cdn.jsdelivr.net/npm/uikit@3.10.1/dist/js/uikit-icons.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
         <script src="https://d3js.org/d3.v4.min.js"></script>
+        <!-- <script src="app.js" type="text/javascript"></script> -->
 		<style>
 			body {
 				font-family: 'Montserrat', sans-serif;
@@ -58,27 +59,108 @@ include("firebasedata.php");
 
         <?php } 
         else { ?>
-        <div class="uk-text-center uk-margin-large-left uk-margin-large-right" uk-grid>
-          
-          <div class="uk-width-1-3@m">
-              <div style="color:lightgreen" class="uk-card ">Upload your Video file to start the analysis</div>
-          </div>
-
-          <div class="uk-width-1-3@m">
-              <div class="uk-card ">
-                <div  class="js-upload" uk-form-custom>
-                    <input  type="file" multiple>
-                    <button class="uk-button uk-button-default" style="color:lightgreen" type="button" tabindex="-1">Upload </button>
-                    
+            <div class="uk-child-width-1-2 uk-text-center uk-padding" uk-grid>
+                <div>
+                    <div class="uk-card" style="color:lightgreen">Upload your Video File to start analysing</div>
                 </div>
-              </div>
-              
-          </div>
-          <div class="uk-width-1-3@m">
-            <a class="uk-button uk-button-default" href="analysis.php">Link</a>
-          </div>
+                <div>
+                    <div class="uk-child-width-1-2 uk-text-center" uk-grid>
+                        <div>
+                        
+                        <div class="uk-inline">
+                        <a class="uk-button uk-button-default" style="color:lightblue" href="#modal-center" uk-toggle>Upload</a>
+                              <!-- <div uk-dropdown>
+                                  <ul class="uk-nav uk-dropdown-nav">
+                                      <li>
+                                      <a class="uk-button uk-button-default" style="color:black" href="#modal-center" uk-toggle>English</a> -->
 
-        </div>
+                                        <div id="modal-center" class="uk-flex-top" uk-modal>
+                                            <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+
+                                                <button class="uk-modal-close-default" type="button" uk-close></button>
+                                                
+                                                <input  type="file" id="English" />
+                                                <button class="uk-button uk-button-primary uk-margin-small-bottom" onclick="uploadEnglish()">Upload English</button>
+                                                <input type="file" id="Hindi" />
+                                                <button class="uk-button uk-button-secondary" onclick="uploadHindi()">Upload Hindi</button>
+                                                      <!-- Stream video via webcam -->
+                                                  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+                                                  <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-storage.js"></script>
+
+                                                <script>
+                                                  var firebaseConfig = {
+                                                    apiKey: "AIzaSyD2ZtFkBbiYZ10dhujJlwyWmHXs9j3W2G0",
+                                                    authDomain: "sentimentanalysis-65306.firebaseapp.com",
+                                                    databaseURL: "https://sentimentanalysis-65306-default-rtdb.asia-southeast1.firebasedatabase.app",
+                                                    projectId: "sentimentanalysis-65306",
+                                                    storageBucket: "sentimentanalysis-65306.appspot.com",
+                                                    messagingSenderId: "571269398754",
+                                                    appId: "1:571269398754:web:eeb1f32df548af3a8a9ebb",
+                                                    measurementId: "G-74SYB1FGL9"
+                                                  };
+                                                  // Initialize Firebase
+                                                  firebase.initializeApp(firebaseConfig);
+                                                  console.log(firebase);
+
+                                                  function uploadEnglish() {
+                                                    const ref = firebase.storage().ref();
+                                                    const file = document.querySelector("#English").files[0];
+                                                    const name = "English_video/"+ file.name;
+                                                    const metadata = {
+                                                      contentType: file.type
+                                                    };
+                                                    const task = ref.child(name).put(file, metadata);
+                                                    task
+                                                      .then(snapshot => snapshot.ref.getDownloadURL())
+                                                      .then(url => {
+                                                        console.log(url);
+                                                        document.querySelector("#image").src = url;
+                                                      })
+                                                      .catch(console.error);
+                                                  }
+                                                  function uploadHindi() {
+                                                    const ref = firebase.storage().ref();
+                                                    const file = document.querySelector("#Hindi").files[0];
+                                                    const name = "Hindi_video/"+ file.name;
+                                                    const metadata = {
+                                                      contentType: file.type
+                                                    };
+                                                    const task = ref.child(name).put(file, metadata);
+                                                    task
+                                                      .then(snapshot => snapshot.ref.getDownloadURL())
+                                                      .then(url => {
+                                                        console.log(url);
+                                                        document.querySelector("#image").src = url;
+                                                      })
+                                                      .catch(console.error);
+                                                  }
+                                                  
+                                                </script>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="js-upload" uk-form-custom>
+                                            <input type="file" id="js-progressbar" multiple>
+                                            <button class="uk-button uk-button-primary" type="button" tabindex="-1">
+                                              English
+                                            </button>
+                                        </div> -->
+                                      <!-- </li>
+                                      <li>
+                                        <div class="js-upload" uk-form-custom>
+                                            <input type="file" multiple>
+                                            <button class="uk-button uk-button-primary" type="button" tabindex="-1">Hindi</button>
+                                        </div>
+                                      </li> -->
+                                  <!-- </ul> -->
+                              <!-- </div> -->
+                          </div>
+                        </div>
+                        <div>
+                            <a class="uk-button uk-button-danger" href="canalysis.php">Check Sentiment</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <?php } ?>
 		</div>
     
