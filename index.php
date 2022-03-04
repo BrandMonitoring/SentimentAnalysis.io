@@ -156,7 +156,7 @@ include("firebasedata.php");
                           </div>
                         </div>
                         <div>
-                            <a class="uk-button uk-button-danger" href="analysis.php">Check Sentiment</a>
+                            <a class="uk-button uk-button-danger" href="canalysis.php">Check Sentiment</a>
                         </div>
                     </div>
                 </div>
