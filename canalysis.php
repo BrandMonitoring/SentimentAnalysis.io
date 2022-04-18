@@ -308,7 +308,7 @@ $GLOBALS['result'] = array();
 					<table class="uk-table uk-margin-medium-left uk-table-hover uk-table-divider">
                     <thead>
                         <tr>
-                            
+                         
                             <th class="uk-text-center">Final Sentiment</th>
                             
                         </tr>
