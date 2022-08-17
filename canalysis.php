@@ -4,11 +4,13 @@ include("firebasedata.php");
 $GLOBALS['x'] = 0;
 $GLOBALS['a'] = 0;
 $GLOBALS['b']=0;
+$GLOBALS['r']=0;
 $GLOBALS['text'] = array();
 $GLOBALS['audio'] = array();
 $GLOBALS['video'] = array();
 $GLOBALS['final'] = array();
 $GLOBALS['result'] = array();
+
 // echo $x
 ?>
 <!DOCTYPE html>
@@ -42,7 +44,7 @@ $GLOBALS['result'] = array();
                 </h1>
 				<div class="uk-child-width-expand@s uk-text-center uk-margin-medium-right" uk-grid>
                 <div>
-						<table class="uk-table uk-margin-medium-left uk-table-hover uk-table-divider">
+						<table class=" sentiments uk-table uk-margin-medium-left uk-table-hover uk-table-divider">
                     <thead>
                         <tr>
                             <th class="uk-text-center">File ID</th>
@@ -54,7 +56,9 @@ $GLOBALS['result'] = array();
                         <tr>
                             <?php $ref_table3="6"; 
                                             
-                                            $fetchdata4 =$database->getReference($ref_table3)->getValue(); 
+                                            $fetchdata4 =$database->getReference($ref_table3)->getValue();
+                                            $totaldata = sizeof($fetchdata4['data']);
+                                           
                                             foreach($fetchdata4 as $keys4){ 
                                                 
                                             
@@ -71,15 +75,13 @@ $GLOBALS['result'] = array();
                                     
                                         <?php
                                         $GLOBALS['x']=$row4["ID"];
-                                            if($row4["Negative"] > $row4["Neutral"]
-                                            AND
-                                            $row4["Negative"]>$row4["Positive"])
+                                            if($row4["Negative"] ==1
+                                            )
                                             { echo "Negative";
                                                 array_push($GLOBALS['text'],"Negative");
 												$ans3=0;} 
-                                            elseif($row4["Negative"] < $row4["Neutral"]
-                                            AND
-                                            $row4["Neutral"]>$row4["Positive"])
+                                            elseif( $row4["Neutral"]==1
+                                            )
                                             { echo "Neutral";
                                                 array_push($GLOBALS['text'],"Neutral");
 												$ans3=5;}
@@ -114,8 +116,9 @@ $GLOBALS['result'] = array();
                         <tr>
                             <?php $ref_table2="5"; 
                                             $fetchdata3 =$database->getReference($ref_table2)->getValue(); 
+                                            
                                             foreach($fetchdata3 as $keys3){
-                                        
+                                            
                                             foreach($keys3 as $key3 => $row3){ ?> 
                           
                             <td height="40">
@@ -124,9 +127,9 @@ $GLOBALS['result'] = array();
                                             
                                             $GLOBALS['a']=$row3["ID"];
                                             
-                                            if($row3["Angry"]+$row3["Sad"]+$row3["Fear"]+$row3["Sarcastic"] > $row3["Neutral"]
+                                            if($row3["Angry"]+$row3["Sad"]+$row3["Fear"]+$row3["Sarcastic"] >= $row3["Neutral"]
                                             AND
-                                            $row3["Angry"]+$row3["Sad"]+$row3["Fear"]+$row3["Sarcastic"]>$row3["Happy"]+$row3["Surprise"])
+                                            $row3["Angry"]+$row3["Sad"]+$row3["Fear"]+$row3["Sarcastic"]>=$row3["Happy"]+$row3["Surprise"])
                                             { echo "Negative";
                                                 array_push($GLOBALS['audio'],"Negative");
 												$ans1=0;} 
@@ -193,7 +196,9 @@ $GLOBALS['result'] = array();
                         foreach(range($GLOBALS['a'],$GLOBALS['x']-1) as $number) { ?>
                             <tr>
                                 <td height="40">
-                                    <?php echo "NA"; 
+                                    <?php echo "NA";
+                                    array_push($GLOBALS['audio'],"NA");
+                                    
                                     ?>
                                 </td>
                             </tr>
@@ -244,6 +249,7 @@ $GLOBALS['result'] = array();
                                             else{ echo "Positive";
                                                 array_push($GLOBALS['video'],"Positive");
 													$ans1=10;} 
+                                           
                                         //print_r($GLOBALS['video']);
                                         ?>
                                     </a>
@@ -294,7 +300,11 @@ $GLOBALS['result'] = array();
                             foreach(range($GLOBALS['b'],$GLOBALS['x']-1) as $number) { ?>
                             <tr>
                                 <td height="40">
-                                    <?php echo "NA"; ?>
+                                     
+
+                                    <?php echo "NA";
+                                    array_push($GLOBALS['video'],"NA");
+                                    ?>
                                 </td>
                             </tr>
                             <?php } ?>
@@ -304,48 +314,89 @@ $GLOBALS['result'] = array();
 					</div>
 					
 					
-					<!-- <div>
+					<div>
 					<table class="uk-table uk-margin-medium-left uk-table-hover uk-table-divider">
                     <thead>
                         <tr>
-                         
+                            
                             <th class="uk-text-center">Final Sentiment</th>
                             
                         </tr>
                     </thead>
                     <tbody>
-                        <tr> -->
+                        <tr>
                        <?php 
                        
                        $w=0;
                        
-                       foreach(range(0,count($GLOBALS['text'])-1) as $number1) { 
-                        $a=0;
-                        
-                       if($GLOBALS['text'][$a] == "Positive" AND $GLOBALS['audio'][$a] == "Positive"){ array_push($GLOBALS['result'],"Positive"); $a=$a+1;}
-                       elseif($GLOBALS['text'][$a] == "Negative" AND $GLOBALS['audio'][$a] == "Negative"){ array_push($GLOBALS['result'],"Negative"); $a=$a+1;}
-                       elseif($GLOBALS['text'][$a] == "Neutral" AND $GLOBALS['audio'][$a] == "Neutral"){ array_push($GLOBALS['result'],"Neutral"); $a=$a+1;}
-                       elseif($GLOBALS['video'][$a] == "Positive" AND $GLOBALS['audio'][$a] == "Positive"){ array_push($GLOBALS['result'],"Positive"); $a=$a+1;}
-                       elseif($GLOBALS['video'][$a] == "Positive" AND $GLOBALS['text'][$a] == "Positive"){ array_push($GLOBALS['result'],"Positive"); $a=$a+1;}
-                       elseif($GLOBALS['video'][$a] == "Negative" AND $GLOBALS['audio'][$a] == "Negative"){ array_push($GLOBALS['result'],"Negative"); $a=$a+1;}
-                       elseif($GLOBALS['video'][$a] == "Negative" AND $GLOBALS['text'][$a] == "Negative"){ array_push($GLOBALS['result'],"Negative"); $a=$a+1;}
-                       elseif($GLOBALS['video'][$a] == "Neutral" AND $GLOBALS['audio'][$a] == "Neutral"){ array_push($GLOBALS['result'],"Neutral"); $a=$a+1;}
-                       elseif($GLOBALS['video'][$a] =="Neutral" AND $GLOBALS['text'][$a] == "Neutral"){ array_push($GLOBALS['result'],"Neutral"); $a=$a+1;}
-                       //elseif($GLOBALS['video']=="NA" AND $GLOBALS['text']; ) 
-                    //    else{array_push($GLOBALS['result'],$GLOBALS['text']);}
-                    else{array_push($GLOBALS['result'],"NA");}
+                       foreach(range(0,count($GLOBALS['text'])-1) as $number1) {
+                        // echo $number1,$GLOBALS['text'][$number1], $GLOBALS['audio'][$number1],$GLOBALS['video'][$number1] ,"\n";
+                       if($GLOBALS['text'][$number1] == "Positive" AND $GLOBALS['audio'][$number1] == "Positive"){
+                            array_push($GLOBALS['result'],"Positive"); }
+                       elseif($GLOBALS['text'][$number1] == "Negative" AND $GLOBALS['audio'][$number1] == "Negative"){ 
+                           array_push($GLOBALS['result'],"Negative"); }
+                       elseif($GLOBALS['text'][$number1]== "Neutral" AND $GLOBALS['audio'][$number1] == "Neutral"){ 
+                           array_push($GLOBALS['result'],"Neutral"); }
+                       elseif($GLOBALS['video'][$number1]== "Positive" AND $GLOBALS['audio'][$number1] == "Positive"){
+                            array_push($GLOBALS['result'],"Positive"); }
+                       elseif($GLOBALS['video'][$number1]== "Positive" AND $GLOBALS['text'][$number1] == "Positive"){ 
+                           array_push($GLOBALS['result'],"Positive"); }
+                       elseif($GLOBALS['video'][$number1] == "Negative" AND $GLOBALS['audio'][$number1] == "Negative"){ 
+                           array_push($GLOBALS['result'],"Negative"); }
+                       elseif($GLOBALS['video'][$number1] == "Negative" AND $GLOBALS['text'][$number1] == "Negative"){ 
+                           array_push($GLOBALS['result'],"Negative"); }
+                       elseif($GLOBALS['video'][$number1] == "Neutral" AND $GLOBALS['audio'][$number1] == "Neutral"){ 
+                           array_push($GLOBALS['result'],"Neutral"); }
+                       elseif($GLOBALS['video'][$number1] =="Neutral" AND $GLOBALS['text'][$number1] == "Neutral"){ 
+                           array_push($GLOBALS['result'],"Neutra"); }
+                       elseif($GLOBALS['video'][$number1]=='NA' AND $GLOBALS['text'][$number1] == "Positive" AND $GLOBALS['audio'][$number1] == "Positive"){
+                        array_push($GLOBALS['result'],"Positive");
+                       }
+                       elseif($GLOBALS['video'][$number1]=='NA' AND $GLOBALS['text'][$number1] == "Negative" AND $GLOBALS['audio'][$number1] == "Negative"){
+                        array_push($GLOBALS['result'],"Negative");
+                       }
+                       elseif($GLOBALS['video'][$number1]=='NA' AND $GLOBALS['text'][$number1] == "Neutral" AND $GLOBALS['audio'][$number1] == "Neutral"){
+                        array_push($GLOBALS['result'],"Neutral");
+                       }
+                       elseif($GLOBALS['video'][$number1]=='NA' AND $GLOBALS['text'][$number1] == "Neutral" AND $GLOBALS['audio'][$number1] == "Positive"){
+                        array_push($GLOBALS['result'],"Positive");
+                       }
+                       elseif($GLOBALS['video'][$number1]=='NA' AND $GLOBALS['text'][$number1] == "Neutral" AND $GLOBALS['audio'][$number1] == "Negative"){
+                        array_push($GLOBALS['result'],"Negative");
+                       }
+                       elseif($GLOBALS['video'][$number1]=='NA' AND $GLOBALS['text'][$number1] == "Postive" AND $GLOBALS['audio'][$number1] == "Negative"){
+                        array_push($GLOBALS['result'],"Neutral");
+                       }
+                       elseif($GLOBALS['video'][$number1]=='NA' AND $GLOBALS['text'][$number1] == "Negative" AND $GLOBALS['audio'][$number1] == "Positive"){
+                        array_push($GLOBALS['result'],"Positive");
+                       }
+                       elseif($GLOBALS['video'][$number1]=='NA' AND $GLOBALS['text'][$number1] == "Negative" AND $GLOBALS['audio'][$number1] == "Neutral"){
+                        array_push($GLOBALS['result'],"Negative");
+                       }
+                       elseif($GLOBALS['video'][$number1]=='NA' AND $GLOBALS['audio'][$number1] == "NA"){
+                        array_push($GLOBALS['result'],$GLOBALS['text'][$number1]);
                         
                        }
-                    //    foreach(range(0,count($GLOBALS['result'])-1) as $number) {  ?>
-                    <!-- //         <tr>
-                    //             <td height="40">
-                    //                 <?php print_r($GLOBALS['result'][$w]);
-                    //                 echo $a;
-                    //                 $w=$w+1; ?>
-                    //             </td>
-                    //         </tr> -->
-                           <?php // } 
-                    //         print_r($GLOBALS["result"]);
+                       else{
+                        array_push($GLOBALS['result'],"Else");
+                       }
+                                   
+
+                       }
+                        
+                        foreach(range(0,count($GLOBALS['result'])-1) as $number) {  ?>
+                             <tr>
+                                 <td height="40">
+                                     <?php print_r($GLOBALS['result'][$number]);
+                                     //echo $a;
+                                     $w=$w+1; 
+                                    
+                        ?>
+                                 </td>
+                             </tr>
+                           <?php  } 
+                            
+                    //         print_r($GLOBALS["video"]);
                     //     //echo $GLOBALS['video'];?>
                         </tr>
                         
