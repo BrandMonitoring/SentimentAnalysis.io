@@ -1,4 +1,4 @@
-<?php 
+<!-- <?php 
 include("conn.php");
 include("firebasedata.php");
 ?>
@@ -80,10 +80,19 @@ include("firebasedata.php");
                                                 <button class="uk-modal-close-default" type="button" uk-close></button>
                                                 
                                                 <input  type="file" id="English" />
-                                                <button class="uk-button uk-button-primary uk-margin-small-bottom" onclick="uploadEnglish()">Upload English</button>
+                                                <button class="uk-button uk-button-primary uk-margin-small-bottom" onclick="uploadEnglish()">Upload English Video</button>
                                                 <input type="file" id="Hindi" />
-                                                <button class="uk-button uk-button-secondary" onclick="uploadHindi()">Upload Hindi</button>
+                                                <button class="uk-button uk-button-secondary uk-margin-small-bottom " onclick="uploadHindi()">Upload Hindi Video</button>
+                                                <input type="file" id="EnglishA" />
+                                                <button class="uk-button uk-button-primary uk-margin-small-bottom " onclick="uploadEnglishAudio()">Upload English Audio</button>
+                                                <input type="file" id="HindiA" />
+                                                <button class="uk-button uk-button-secondary uk-margin-small-bottom " onclick="uploadHindiAudio()">Upload Hindi Audio</button>
+                                                <input type="file" id="EnglishT" />
+                                                <button class="uk-button uk-button-primary uk-margin-small-bottom " onclick="uploadEnglishText()">Upload English Text</button>
+                                                <input type="file" id="HindiT" />
+                                                <button class="uk-button uk-button-secondary uk-margin-small-bottom " onclick="uploadHindiText()">Upload Hindi Text</button>
                                                       <!-- Stream video via webcam -->
+                                                      <p> Note: The database account limit expired. The file cannot be uploaded directly but the projects works on local machine. The screenshot is attached in the pdf.</p>
                                                   <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
                                                   <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-storage.js"></script>
 
@@ -105,7 +114,57 @@ include("firebasedata.php");
                                                   function uploadEnglish() {
                                                     const ref = firebase.storage().ref();
                                                     const file = document.querySelector("#English").files[0];
-                                                    const name = "English_video/"+ file.name;
+                                                    const name = "English_Video/"+ file.name;
+                                                    const metadata = {
+                                                      contentType: file.type
+                                                    };
+                                                    const task = ref.child(name).put(file, metadata);
+                                                    task
+                                                      .then(snapshot => snapshot.ref.getDownloadURL())
+                                                      .then(url => {
+                                                        console.log(url);
+                                                        document.querySelector("#image").src = url;
+                                                      })
+                                                      .catch(console.error);
+                                                      let id = "123";
+  
+                                                      let data = {};
+                                                      
+                                                      data["message"] = "Hello Google Firebase";
+                                                      
+                                                        firebase.database().ref('test/'+id).set(data,function(error) {
+                                                                    if (error) {
+                                                                      // The write failed...
+
+                                                                      console.log({error});
+                                                                    } else {
+
+                                                                                          
+                                                                        alert("success");
+                                                                      // Data saved successfully!
+                                                                    }
+                                                                  });
+                                                  }
+                                                  function uploadEnglishAudio() {
+                                                    const ref = firebase.storage().ref();
+                                                    const file = document.querySelector("#EnglishA").files[0];
+                                                    const name = "English_Audio/"+ file.name;
+                                                    const metadata = {
+                                                      contentType: file.type
+                                                    };
+                                                    const task = ref.child(name).put(file, metadata);
+                                                    task
+                                                      .then(snapshot => snapshot.ref.getDownloadURL())
+                                                      .then(url => {
+                                                        console.log(url);
+                                                        document.querySelector("#image").src = url;
+                                                      })
+                                                      .catch(console.error);
+                                                  }
+                                                  function uploadEnglishText() {
+                                                    const ref = firebase.storage().ref();
+                                                    const file = document.querySelector("#EnglishT").files[0];
+                                                    const name = "English_Text/"+ file.name;
                                                     const metadata = {
                                                       contentType: file.type
                                                     };
@@ -121,7 +180,39 @@ include("firebasedata.php");
                                                   function uploadHindi() {
                                                     const ref = firebase.storage().ref();
                                                     const file = document.querySelector("#Hindi").files[0];
-                                                    const name = "Hindi_video/"+ file.name;
+                                                    const name = "Hindi_Video/"+ file.name;
+                                                    const metadata = {
+                                                      contentType: file.type
+                                                    };
+                                                    const task = ref.child(name).put(file, metadata);
+                                                    task
+                                                      .then(snapshot => snapshot.ref.getDownloadURL())
+                                                      .then(url => {
+                                                        console.log(url);
+                                                        document.querySelector("#image").src = url;
+                                                      })
+                                                      .catch(console.error);
+                                                  }
+                                                  function uploadHindiAudio() {
+                                                    const ref = firebase.storage().ref();
+                                                    const file = document.querySelector("#HindiA").files[0];
+                                                    const name = "Hindi_Audio/"+ file.name;
+                                                    const metadata = {
+                                                      contentType: file.type
+                                                    };
+                                                    const task = ref.child(name).put(file, metadata);
+                                                    task
+                                                      .then(snapshot => snapshot.ref.getDownloadURL())
+                                                      .then(url => {
+                                                        console.log(url);
+                                                        document.querySelector("#image").src = url;
+                                                      })
+                                                      .catch(console.error);
+                                                  }
+                                                  function uploadHindiText() {
+                                                    const ref = firebase.storage().ref();
+                                                    const file = document.querySelector("#HindiT").files[0];
+                                                    const name = "Hindi_Text/"+ file.name;
                                                     const metadata = {
                                                       contentType: file.type
                                                     };
@@ -136,6 +227,7 @@ include("firebasedata.php");
                                                   }
                                                   
                                                 </script>
+                                                
                                             </div>
                                         </div>
                                         <!-- <div class="js-upload" uk-form-custom>
@@ -157,7 +249,10 @@ include("firebasedata.php");
                         </div>
                         <div>
                             <a class="uk-button uk-button-danger" href="canalysis.php">Check Sentiment</a>
+                            
+                <p style="color:white"> Click on check sentiment button to navigate to the output page.</p>
                         </div>
+                        
                     </div>
                 </div>
             </div>
